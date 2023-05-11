@@ -6,7 +6,7 @@ The input/output is a string in RFC3339 format.
 """
 scalar DateTime
 
-type EventInstance0 {
+type EventInstance0Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -17,7 +17,7 @@ type EventInstance0 {
 	guestMaxCount: Int
 }
 
-type EventInstance1 {
+type EventInstance1Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -28,7 +28,7 @@ type EventInstance1 {
 	guestMaxCount: Int
 }
 
-type EventInstance2 {
+type EventInstance2Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -39,7 +39,7 @@ type EventInstance2 {
 	guestMaxCount: Int
 }
 
-type EventInstance3 {
+type EventInstance3Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -50,7 +50,7 @@ type EventInstance3 {
 	guestMaxCount: Int
 }
 
-type EventInstance4 {
+type EventInstance4Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -61,7 +61,7 @@ type EventInstance4 {
 	guestMaxCount: Int
 }
 
-type EventInstance5 {
+type EventInstance5Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -72,7 +72,7 @@ type EventInstance5 {
 	guestMaxCount: Int
 }
 
-type EventInstance6 {
+type EventInstance6Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -83,7 +83,7 @@ type EventInstance6 {
 	guestMaxCount: Int
 }
 
-type EventInstance7 {
+type EventInstance7Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -94,7 +94,7 @@ type EventInstance7 {
 	guestMaxCount: Int
 }
 
-type EventInstance8 {
+type EventInstance8Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -105,7 +105,7 @@ type EventInstance8 {
 	guestMaxCount: Int
 }
 
-type EventInstance9 {
+type EventInstance9Object {
 	title: String!
 	description: String!
 	fromDate: DateTime!
@@ -230,29 +230,29 @@ input EventInstanceCreateInput9 {
 
 
 type Mutation {
-	create0(input: EventInstanceCreateInput0!): EventInstance0!
-	create1(input: EventInstanceCreateInput1!): EventInstance1!
-	create2(input: EventInstanceCreateInput2!): EventInstance2!
-	create3(input: EventInstanceCreateInput3!): EventInstance3!
-	create4(input: EventInstanceCreateInput4!): EventInstance4!
-	create5(input: EventInstanceCreateInput5!): EventInstance5!
-	create6(input: EventInstanceCreateInput6!): EventInstance6!
-	create7(input: EventInstanceCreateInput7!): EventInstance7!
-	create8(input: EventInstanceCreateInput8!): EventInstance8!
-	create9(input: EventInstanceCreateInput9!): EventInstance9!
+	create0(input: EventInstanceCreateInput0!): EventInstance0Object!
+	create1(input: EventInstanceCreateInput1!): EventInstance1Object!
+	create2(input: EventInstanceCreateInput2!): EventInstance2Object!
+	create3(input: EventInstanceCreateInput3!): EventInstance3Object!
+	create4(input: EventInstanceCreateInput4!): EventInstance4Object!
+	create5(input: EventInstanceCreateInput5!): EventInstance5Object!
+	create6(input: EventInstanceCreateInput6!): EventInstance6Object!
+	create7(input: EventInstanceCreateInput7!): EventInstance7Object!
+	create8(input: EventInstanceCreateInput8!): EventInstance8Object!
+	create9(input: EventInstanceCreateInput9!): EventInstance9Object!
 }
 
 type Query {
-	eventInstances0: [EventInstance0!]!
-	eventInstances1: [EventInstance1!]!
-	eventInstances2: [EventInstance2!]!
-	eventInstances3: [EventInstance3!]!
-	eventInstances4: [EventInstance4!]!
-	eventInstances5: [EventInstance5!]!
-	eventInstances6: [EventInstance6!]!
-	eventInstances7: [EventInstance7!]!
-	eventInstances8: [EventInstance8!]!
-	eventInstances9: [EventInstance9!]!
+	eventInstances0: [EventInstance0Object!]!
+	eventInstances1: [EventInstance1Object!]!
+	eventInstances2: [EventInstance2Object!]!
+	eventInstances3: [EventInstance3Object!]!
+	eventInstances4: [EventInstance4Object!]!
+	eventInstances5: [EventInstance5Object!]!
+	eventInstances6: [EventInstance6Object!]!
+	eventInstances7: [EventInstance7Object!]!
+	eventInstances8: [EventInstance8Object!]!
+	eventInstances9: [EventInstance9Object!]!
 }
 
 
