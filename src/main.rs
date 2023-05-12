@@ -1,91 +1,79 @@
-mod controllers;
+#[macro_use] extern crate juniper;
 
-use async_graphql::{
-    http::{playground_source, GraphQLPlaygroundConfig},
-    EmptySubscription, ObjectType, Request, Response, Schema,
-    SubscriptionType,
+use std::{convert::Infallible, sync::Arc, net::SocketAddr};
+
+use hyper::{
+    server::{Server},
+    service::{make_service_fn, service_fn},
+    Method, Response, StatusCode, Body,
 };
-use axum::{
-    extract::Extension,
-    response::{Html, IntoResponse},
-    http::{HeaderMap},
-    routing::get,
-    Router, Server,
-};
-use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
-use controllers::{Query, Mutation};
+use juniper::{RootNode, EmptySubscription, EmptyMutation};
+
+#[derive(juniper::GraphQLObject)]
+#[graphql(description="A humanoid creature in the Star Wars universe")]
+struct Human {
+    id: String,
+    name: String,
+    home_planet: String,
+}
+
+
+struct Query;
+
+#[graphql_object]
+/// The root query object of the schema
+impl Query {
+    fn apiVersion() -> &str {
+        "1.0"
+    }
+}
+
+
+//type Schema = juniper::RootNode<'static, Query, EmptyMutation, EmptySubscription>;
+
+pub struct Context {}
 
 #[tokio::main]
-async fn main() -> Result<(), anyhow::Error>{
-    let schema = Schema::build(Query::default(), Mutation::default(), EmptySubscription).finish();
-    let app = App{schema};
-    std::fs::write("schema.graphql", app.sdl())?;
+async fn main() {
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
-    let graphql_http = Router::new()
-        .route(
-            "/graphql",
-            get(graphql_playground).post(graphql_handler::<Query, Mutation, EmptySubscription>),
-        )
-        .layer(Extension(app));
-    let health = Router::new().route("/health", get(health));
+    let db = Arc::new(());
+    let root_node = Arc::new(RootNode::new(
+        Query,
+        EmptyMutation::new(),
+        EmptySubscription::new(),
+    ));
 
-    let graphql_http = graphql_http.merge(health);
+    let new_service = make_service_fn(move |_| {
+        let root_node = root_node.clone();
+        let ctx = db.clone();
 
-    println!("Server started on port {}", "8080");
+        async {
+            Ok::<_, hyper::Error>(service_fn(move |req| {
+                let root_node = root_node.clone();
+                let ctx = ctx.clone();
+                async {
+                    Ok::<_, Infallible>(match (req.method(), req.uri().path()) {
+                        (&Method::GET, "/") => juniper_hyper::graphiql("/graphql", None).await,
+                        (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
+                            juniper_hyper::graphql(root_node, ctx, req).await
+                        }
+                        _ => {
+                            let mut response = Response::new(Body::empty());
+                            *response.status_mut() = StatusCode::NOT_FOUND;
+                            response
+                        }
+                    })
+                }
+            }))
+        }
+    });
 
-    Server::bind(&([0, 0, 0, 0], 8080).into())
-        .serve(graphql_http.into_make_service())
-        .await?;
+    let server = Server::bind(&addr).serve(new_service);
 
-    Ok(())
-}
+    println!("Listening on http://{addr}");
 
-#[derive(Clone)]
-pub struct App<TQuery, TMutation, TSubscription>
-where
-    TQuery: ObjectType + Sized + 'static,
-    TMutation: ObjectType + Sized + 'static,
-    TSubscription: SubscriptionType + Sized + 'static,
-{
-    schema: Schema<TQuery, TMutation, TSubscription>,
-}
-
-#[allow(clippy::type_complexity)]
-impl<TQuery, TMutation, TSubscription> App<TQuery, TMutation, TSubscription>
-where
-    TQuery: ObjectType + Sized + 'static,
-    TMutation: ObjectType + Sized + 'static,
-    TSubscription: SubscriptionType + Sized + 'static,
-{
-    pub fn sdl(&self) -> String {
-        self.schema.sdl()
+    if let Err(e) = server.await {
+        eprintln!("server error: {e}")
     }
-
-    pub async fn execute(&self, _: HeaderMap, req: Request) -> Response {
-        self.schema.execute(req).await
-    }
-
-}
-
-pub async fn graphql_handler<TQuery, TMutation, TSubscription>(
-    Extension(app): Extension<App<TQuery, TMutation, TSubscription>>,
-    headers: HeaderMap,
-    req: GraphQLRequest,
-) -> GraphQLResponse
-where
-    TQuery: ObjectType + Sized + 'static,
-    TMutation: ObjectType + Sized + 'static,
-    TSubscription: SubscriptionType + Sized + 'static,
-{
-    app.execute(headers, req.into_inner()).await.into()
-}
-
-#[allow(clippy::unused_async)]
-async fn graphql_playground() -> impl IntoResponse {
-    Html(playground_source(GraphQLPlaygroundConfig::new("/")))
-}
-
-#[allow(clippy::unused_async)]
-async fn health() -> Html<&'static str> {
-    Html("Ok")
 }

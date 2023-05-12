@@ -6,13 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-graphql = { version = "5.0.6", features = [
-    "uuid08",
-    "chrono",
-    "dataloader",
-] }
-async-graphql-axum = "5.0.6"
-axum = "0.6.11"
+hyper = { version = "0.14.26", features = ["full"] }
 tokio = { version = "1.25.0", default-features = false, features = ["full"] }
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
 chrono = { version = "0.4.23", features = ["serde"] }
@@ -21,3 +15,5 @@ serde_json = "1.0.93"
 anyhow = "1.0.69"
 paste = "1.0.11"
 getset = "0.1.2"
+juniper = "0.15.11"
+juniper_hyper = "0.8.0"

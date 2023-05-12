@@ -6,14 +6,14 @@ use chrono::{DateTime, Utc};
 use getset::{CopyGetters, Getters};
 
 #[derive(Default, Clone)]
-pub struct EventInstanceQueries4;
+pub struct EventInstanceQueries0;
 
 #[Object]
-impl EventInstanceQueries4{
-    async fn event_instances4(
+impl EventInstanceQueries0{
+    async fn event_instances0(
         &self,
-    ) -> Result<Vec<EventInstance4Object>, anyhow::Error> {
-        let ret = vec![EventInstance4{
+    ) -> Result<Vec<EventInstance0Object>, anyhow::Error> {
+        let ret = vec![EventInstance0{
             title: "a".to_string(),
             description: "a".to_string(),
             from_date: Utc::now(),
@@ -28,15 +28,15 @@ impl EventInstanceQueries4{
 }
 
 #[derive(Default, Clone)]
-pub struct EventInstanceMutations4;
+pub struct EventInstanceMutations0;
 
 #[Object]
-impl EventInstanceMutations4{
-    async fn create4(
+impl EventInstanceMutations0{
+    async fn create0(
         &self,
-        _input: EventInstanceCreateInput4,
-    ) -> Result<EventInstance4Object, anyhow::Error> {
-        let ret = EventInstance4{
+        _input: EventInstanceCreateInput0,
+    ) -> Result<EventInstance0Object, anyhow::Error> {
+        let ret = EventInstance0{
             title: "a".to_string(),
             description: "a".to_string(),
             from_date: Utc::now(),
@@ -51,7 +51,7 @@ impl EventInstanceMutations4{
 }
 
 #[derive(InputObject)]
-struct EventInstanceCreateInput4 {
+struct EventInstanceCreateInput0 {
     title: String,
     description: String,
     from_date: DateTime<Utc>,
@@ -63,7 +63,7 @@ struct EventInstanceCreateInput4 {
 }
 
 #[derive(Getters, CopyGetters, Clone)]
-pub struct EventInstance4 {
+pub struct EventInstance0 {
     #[getset(get = "pub")]
     title: String,
     #[getset(get = "pub")]
@@ -113,10 +113,10 @@ macro_rules! derive_graphql_wrapper {
     };
 }
 
-derive_graphql_wrapper!(EventInstance4);
+derive_graphql_wrapper!(EventInstance0);
 
-#[Object(name = "EventInstance4")]
-impl EventInstance4Object {
+#[Object(name = "EventInstance0")]
+impl EventInstance0Object {
     async fn title(&self) -> &String {
         self.0.title()
     }
