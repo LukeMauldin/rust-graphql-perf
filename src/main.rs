@@ -1,4 +1,4 @@
-#[macro_use] extern crate juniper;
+mod controllers;
 
 use std::{convert::Infallible, sync::Arc, net::SocketAddr};
 
@@ -9,24 +9,31 @@ use hyper::{
 };
 use juniper::{RootNode, EmptySubscription, EmptyMutation};
 
-#[derive(juniper::GraphQLObject)]
-#[graphql(description="A humanoid creature in the Star Wars universe")]
-struct Human {
-    id: String,
-    name: String,
-    home_planet: String,
-}
+// #[derive(juniper::GraphQLObject)]
+// #[graphql(description="A humanoid creature in the Star Wars universe")]
+// struct Human {
+//     id: String,
+//     name: String,
+//     home_planet: String,
+// }
 
 
-struct Query;
+// struct Query;
 
-#[graphql_object]
-/// The root query object of the schema
-impl Query {
-    fn apiVersion() -> &str {
-        "1.0"
-    }
-}
+// #[graphql_object]
+// impl Query {
+//     fn apiVersion() -> &str {
+//         "1.0"
+//     }
+
+//     fn human() -> Human {
+//          Human{
+//             id: "id".to_string(),
+//             name: "name".to_string(),
+//             home_planet: "planet".to_string(),
+//         }
+//     }
+// }
 
 
 //type Schema = juniper::RootNode<'static, Query, EmptyMutation, EmptySubscription>;
@@ -39,7 +46,7 @@ async fn main() {
 
     let db = Arc::new(());
     let root_node = Arc::new(RootNode::new(
-        Query,
+        controllers::instance0::QueryRoot{},
         EmptyMutation::new(),
         EmptySubscription::new(),
     ));
