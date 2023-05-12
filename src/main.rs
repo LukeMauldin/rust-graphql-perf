@@ -9,33 +9,6 @@ use hyper::{
 };
 use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
-// #[derive(juniper::GraphQLObject)]
-// #[graphql(description="A humanoid creature in the Star Wars universe")]
-// struct Human {
-//     id: String,
-//     name: String,
-//     home_planet: String,
-// }
-
-// struct Query;
-
-// #[graphql_object]
-// impl Query {
-//     fn apiVersion() -> &str {
-//         "1.0"
-//     }
-
-//     fn human() -> Human {
-//          Human{
-//             id: "id".to_string(),
-//             name: "name".to_string(),
-//             home_planet: "planet".to_string(),
-//         }
-//     }
-// }
-
-//type Schema = juniper::RootNode<'static, Query, EmptyMutation, EmptySubscription>;
-
 pub struct Context {}
 
 #[tokio::main]
