@@ -1,13 +1,13 @@
 mod controllers;
 
-use std::{convert::Infallible, sync::Arc, net::SocketAddr};
+use std::{convert::Infallible, net::SocketAddr, sync::Arc};
 
 use hyper::{
-    server::{Server},
+    server::Server,
     service::{make_service_fn, service_fn},
-    Method, Response, StatusCode, Body,
+    Body, Method, Response, StatusCode,
 };
-use juniper::{RootNode, EmptySubscription, EmptyMutation};
+use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
 // #[derive(juniper::GraphQLObject)]
 // #[graphql(description="A humanoid creature in the Star Wars universe")]
@@ -16,7 +16,6 @@ use juniper::{RootNode, EmptySubscription, EmptyMutation};
 //     name: String,
 //     home_planet: String,
 // }
-
 
 // struct Query;
 
@@ -35,7 +34,6 @@ use juniper::{RootNode, EmptySubscription, EmptyMutation};
 //     }
 // }
 
-
 //type Schema = juniper::RootNode<'static, Query, EmptyMutation, EmptySubscription>;
 
 pub struct Context {}
@@ -46,7 +44,7 @@ async fn main() {
 
     let db = Arc::new(());
     let root_node = Arc::new(RootNode::new(
-        controllers::instance0::QueryRoot{},
+        controllers::QueryRoot {},
         EmptyMutation::new(),
         EmptySubscription::new(),
     ));

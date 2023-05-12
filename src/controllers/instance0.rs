@@ -1,52 +1,54 @@
-pub struct QueryRoot;
+use chrono::{DateTime, Utc};
 
-//pub type Schema = juniper::RootNode<'static, QueryRoot, juniper::EmptyMutation<()>, juniper::EmptySubscription<()>>;
+#[derive(juniper::GraphQLObject)]
+pub struct EventInstance0Object {
+    pub title: String,
+    pub description: String,
+    pub from_date: DateTime<Utc>,
+    pub to_date: DateTime<Utc>,
+    pub start_transition_mins: i32,
+    pub end_transition_mins: i32,
+    pub guest_min_count: Option<i32>,
+    pub guest_max_count: Option<i32>,
+}
 
-#[juniper::graphql_object]
-impl QueryRoot {
-    fn get_instance0() -> EventInstance0Object {
-        EventInstance0Object{
-            title: "title".to_string()
-        }
+#[derive(juniper::GraphQLInputObject)]
+pub struct EventInstanceCreateInput0 {
+    title: String,
+    description: String,
+    from_date: DateTime<Utc>,
+    to_date: DateTime<Utc>,
+    start_transition_mins: i32,
+    end_transition_mins: i32,
+    guest_min_count: Option<i32>,
+    guest_max_count: Option<i32>,
+}
+
+pub fn event_instances0() -> EventInstance0Object {
+    EventInstance0Object {
+        title: "a".to_string(),
+        description: "a".to_string(),
+        from_date: Utc::now(),
+        to_date: Utc::now(),
+        start_transition_mins: 0,
+        end_transition_mins: 1,
+        guest_min_count: None,
+        guest_max_count: None,
     }
 }
 
- #[derive(juniper::GraphQLObject)]
- struct EventInstance0Object {
-    title: String,
- }
-
-// #[Object(name = "EventInstance0")]
-// impl EventInstance0Object {
-//     async fn title(&self) -> &String {
-//         self.0.title()
-//     }
-
-//     async fn description(&self) -> &String {
-//         self.0.description()
-//     }
-
-//     async fn from_date(&self) -> DateTime<Utc> {
-//         self.0.from_date()
-//     }
-
-//     async fn to_date(&self) -> DateTime<Utc>{
-//         self.0.to_date()
-//     }
-
-//     async fn start_transition_mins(&self) -> i16 {
-//         self.0.start_transition_mins()
-//     }
-
-//     async fn end_transition_mins(&self) -> i16 {
-//         self.0.end_transition_mins()
-//     }
-
-//     async fn guest_min_count(&self) -> Option<i16> {
-//         self.0.guest_min_count()
-//     }
-
-//     async fn guest_max_count(&self) -> Option<i16> {
-//         self.0.guest_max_count()
-//     }
-// }
+pub async fn create0(
+    _input: EventInstanceCreateInput0,
+) -> Result<EventInstance0Object, anyhow::Error> {
+    let ret = EventInstance0Object {
+        title: "a".to_string(),
+        description: "a".to_string(),
+        from_date: Utc::now(),
+        to_date: Utc::now(),
+        start_transition_mins: 0,
+        end_transition_mins: 1,
+        guest_min_count: None,
+        guest_max_count: None,
+    };
+    Ok(ret)
+}
